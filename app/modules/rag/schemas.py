@@ -45,3 +45,13 @@ class SourceChunk(BaseModel):
 class QueryResponse(BaseModel):
     answer: str
     sources: list[SourceChunk]
+
+
+class DebugQueryResponse(BaseModel):
+    """The question, what was fetched, and the final answer, side by side -
+    for telling apart a retrieval failure (wrong chunks) from a generation
+    failure (right chunks, bad answer)."""
+
+    question: str
+    retrieved: list[SourceChunk]
+    answer: str
