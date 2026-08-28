@@ -4,10 +4,9 @@ from fastapi.responses import JSONResponse
 
 class ChatProviderError(Exception):
     """Raised whenever talking to Groq fails, for any reason - rate limit,
-    network failure, invalid key, unexpected response, an unknown tool the
-    model asked for, etc. `service.py` doesn't need to know anything about
-    HTTP; it just raises this with a human-readable message, and the
-    handler below decides the status code.
+    network failure, invalid key, unexpected response, etc. `llm.py`
+    doesn't need to know anything about HTTP; it just raises this with a
+    human-readable message, and the handler below decides the status code.
     """
 
     def __init__(self, message: str, status_code: int = 502):

@@ -20,8 +20,3 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
-
-
-class ToolChatResponse(BaseModel):
-    reply: str
-    tool_used: str | None = None  # None means the model answered without needing a tool
