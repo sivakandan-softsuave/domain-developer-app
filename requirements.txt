@@ -2,6 +2,6 @@ fastapi
 uvicorn[standard]
 pydantic-settings
 qdrant-client
-groq
+groq>=0.11.0
 sentence-transformers
 python-dotenv
