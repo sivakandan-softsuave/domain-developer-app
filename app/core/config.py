@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     chunk_size: int = 800
     chunk_overlap: int = 100
 
+    # --- Trace logging (used from Week 5 onward) ---
+    traces_file: str = "data/traces.jsonl"
+
 
 @lru_cache
 def get_settings() -> Settings:

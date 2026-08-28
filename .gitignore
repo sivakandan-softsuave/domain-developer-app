@@ -11,6 +11,9 @@ env/
 # Environment variables / secrets
 .env
 
+# Runtime data - trace logs and error-analysis review files (Week 5 onward)
+data/
+
 # IDE
 .idea/
 .vscode/

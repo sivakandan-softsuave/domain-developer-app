@@ -5,6 +5,7 @@ from qdrant_client.models import PointStruct
 from app.core.config import get_settings
 from app.core.database import ensure_collection, get_qdrant_client
 from app.core.embeddings import embed_texts, embedding_dimension
+from app.core.tracing import log_trace
 from app.modules.rag.chunker import chunk_text
 from app.modules.rag.exceptions import RagError
 from app.modules.rag.llm import generate_answer
@@ -49,15 +50,20 @@ def ingest_document(text: str, source: str | None, collection_name: str | None =
 
 def _retrieve_and_answer(question: str, top_k: int) -> tuple[str, list[SourceChunk]]:
     """Shared by answer_question() and inspect_query(): retrieve via
-    hybrid search, then generate an answer grounded in what was found.
+    hybrid search, generate an answer grounded in what was found, and log
+    a complete trace of the exchange (Week 5's error analysis reads these
+    later) - both callers get this for free from the one shared path.
     """
     sources = hybrid_search(question, top_k)
 
     if not sources:
-        return "I don't have any ingested documents to answer from yet.", sources
+        answer = "I don't have any ingested documents to answer from yet."
+        log_trace(question, [], answer)
+        return answer, sources
 
     context = "\n\n---\n\n".join(source.text for source in sources)
     answer = generate_answer(question, context)
+    log_trace(question, [source.model_dump() for source in sources], answer)
     return answer, sources
 
 
